@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><meta name="referrer" content="no-referrer">
+<title>TikTok connected</title><link rel="stylesheet" href="style.css"></head><body>
+<h1>Shorts Autopilot: TikTok sign-in</h1>
+<p id="msg">Reading the sign-in result…</p>
+<p><button id="copy" hidden>Copy the code</button></p>
+<p>Copy the code, then go back to Claude and say "TikTok code copied". The code works once and expires within minutes; nothing on this page is stored or sent anywhere.</p>
+<script>
+const q = new URLSearchParams(location.search), code = q.get("code"), err = q.get("error");
+const msg = document.getElementById("msg"), btn = document.getElementById("copy");
+if (code) {
+  msg.textContent = "TikTok approved the connection.";
+  btn.hidden = false;
+  btn.onclick = () => navigator.clipboard.writeText(code).then(() => { btn.textContent = "Copied"; });
+} else {
+  msg.textContent = err ? "TikTok returned an error: " + err + " " + (q.get("error_description") || "") : "No sign-in code on this page.";
+}
+history.replaceState(null, "", location.pathname);  // keep the one-time code out of the address bar and history
+</script>
+</body></html>
